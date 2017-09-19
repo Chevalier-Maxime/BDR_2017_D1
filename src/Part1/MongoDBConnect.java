@@ -1,4 +1,4 @@
-package PACKAGE_NAME;
+package Part1;
 
 public class MongoDBConnect {
 }
