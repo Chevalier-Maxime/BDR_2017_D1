@@ -13,5 +13,8 @@ public class RawEntry {
         this.components = components;
         this.spell_resistance = spell_resistance;
     }
-    
+
+    public RawEntry() {
+
+    }
 }
