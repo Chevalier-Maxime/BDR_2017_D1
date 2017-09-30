@@ -1,4 +1,5 @@
-package PACKAGE_NAME;
+package partieUn;
 
 public class Main {
+
 }
