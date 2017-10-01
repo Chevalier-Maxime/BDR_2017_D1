@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 
 public class Parser {
 
@@ -38,8 +39,8 @@ public class Parser {
         System.out.println(spellName.text());
         //current_index++;
 
-        getSpellResistance(doc);
-        System.out.println(getSpellResistance(doc));
+        int[] a = getLevels(doc);
+        System.out.println(getLevels(doc));
         return null;
     }
 
@@ -59,11 +60,14 @@ public class Parser {
 
     }
 
-    private String[] getLevels(Document doc){
+    private int[] getLevels(Document doc){
         Element spellName = doc.select("P.SPDet").first();
         String string = spellName.text().replace('/',',');
+        System.out.println(string);
         String stringFormatted = string.substring(string.lastIndexOf(';') + 7);
+        System.out.println(stringFormatted);
         stringFormatted = stringFormatted.replaceAll("[^0-9,]","");
+        System.out.println(stringFormatted);
 
         String finalString = "";
 
@@ -80,7 +84,7 @@ public class Parser {
 
             precedent = current;
         }
-        return stringFormatted.split(",");
+        return Arrays.stream(finalString.split(",")).mapToInt(Integer::parseInt).toArray();
     }
 
     private String[] getComponents(Document doc){
