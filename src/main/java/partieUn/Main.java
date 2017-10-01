@@ -13,7 +13,8 @@ public class Main {
     public static void main(String[] args) {
         try {
             Parser p = new Parser(new URL(URL));
-            p.next(1);
+            RawEntry r = p.next(2);
+            System.out.println("Fini");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

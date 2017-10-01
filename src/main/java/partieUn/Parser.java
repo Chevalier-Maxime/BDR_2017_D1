@@ -1,6 +1,5 @@
 package partieUn;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,6 +8,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 
+/**
+ * Classe permettant de parser certaines informations du site www.dxcontent.com
+ */
 public class Parser {
 
     private URL url;
@@ -17,38 +19,39 @@ public class Parser {
         this.url = url;
     }
 
+    /**
+     * Creer l'objet RawEntry
+     * @param index l'index de la page HTML
+     * @return un RawEntry complet
+     * @throws IOException
+     */
     public RawEntry next(int index) throws IOException {
-
-        RawEntry spell = new RawEntry();
         Document doc = Jsoup.connect(url.toString()+index).get();
-
-        //Spell Name
-        Element spellName = doc.select("div.heading").first();
-        System.out.println(spellName.text());
-
-        //Classes and levels
-        spellName = doc.select("P.SPDet").first();
-        System.out.println(spellName.text());
-
-        //Components
-        spellName = doc.select("P.SPDet").get(2);
-        System.out.println(spellName.text());
-
-        //Spell resistance
-        spellName = doc.select("P.SPDet").get(6);
-        System.out.println(spellName.text());
-        //current_index++;
-
-        int[] a = getLevels(doc);
-        System.out.println(getLevels(doc));
-        return null;
+        RawEntry spell = new RawEntry(
+                getSpellName(doc),
+                getClasses(doc),
+                getLevels(doc),
+                getComponents(doc),
+                getSpellResistance(doc)
+        );
+        return spell;
     }
 
+    /**
+     * Retourne le nom du sort
+     * @param doc Document HTML où récuperer le sort
+     * @return le nom du sort
+     */
     private String getSpellName(Document doc){
         Element spellName = doc.select("div.heading").first();
         return spellName.text();
     }
 
+    /**
+     * Fonction permettant de renvoyer toutes les classes associées à un sort
+     * @param doc Document HTML où récuperer le sort
+     * @return les classes permettant de lancer le sort
+     */
     private String[] getClasses(Document doc){
         Element spellName = doc.select("P.SPDet").first();
         String string = spellName.text();
@@ -60,6 +63,11 @@ public class Parser {
 
     }
 
+    /**
+     * Fontion retournant les niveaux associés aux classes (@see getClasses)
+     * @param doc Document HTML où récuperer le sort
+     * @return Les niveaux associés au sort
+     */
     private int[] getLevels(Document doc){
         Element spellName = doc.select("P.SPDet").first();
         String string = spellName.text().replace('/',',');
@@ -87,6 +95,11 @@ public class Parser {
         return Arrays.stream(finalString.split(",")).mapToInt(Integer::parseInt).toArray();
     }
 
+    /**
+     * Fonction permettant de recuperer les types de besoin d'un sort
+     * @param doc Document HTML où récuperer le sort
+     * @return Tableau des types de composants
+     */
     private String[] getComponents(Document doc){
         Element component = doc.select("P.SPDet").get(2);
         String string = component.text();
@@ -94,6 +107,11 @@ public class Parser {
         return string.split(",");
     }
 
+    /**
+     * Fonction permettant de recuperer le spell resistance d'un sort dans la page HTML
+     * @param doc Document HTML où récuperer le sort
+     * @return spell resistance
+     */
     private boolean getSpellResistance(Document doc){
         Element spellResistance = doc.select("P.SPDet").get(6);
         String string = spellResistance.text().substring(spellResistance.text().lastIndexOf(';'));
