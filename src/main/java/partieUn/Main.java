@@ -4,6 +4,24 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mongodb.client.model.Indexes;
+
+import static com.mongodb.client.model.Accumulators.sum;
+import static com.mongodb.client.model.Aggregates.group;
+import static com.mongodb.client.model.Aggregates.match;
+import static com.mongodb.client.model.Filters.eq;
+import static java.util.Arrays.asList;
+
+
+
 public class Main {
 
     private final static int START_INDEX = 1;
@@ -11,7 +29,26 @@ public class Main {
     private final static String URL = "http://www.dxcontent.com/SDB_SpellBlock.asp?SDBID=";
 
     public static void main(String[] args) {
-        try {
+        
+    	
+    	
+    	// 1. Connect to MongoDB instance running on localhost
+    	MongoClient mongoClient = new MongoClient();
+
+    	// Access database named 'test'
+    	MongoDatabase database = mongoClient.getDatabase("test");
+
+    	// Access collection named 'restaurants'
+    	MongoCollection<Document> collection = database.getCollection("sorts");
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	try {
             Parser p = new Parser(new URL(URL));
             RawEntry r = p.next(2);
             System.out.println("Fini");
