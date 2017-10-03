@@ -15,4 +15,24 @@ public class RawEntry {
         this.components = components;
         this.spell_resistance = spell_resistance;
     }
+
+    public String getSpellName() {
+        return spellName;
+    }
+
+    public String[] getClasses() {
+        return classes;
+    }
+
+    public int[] getLevel() {
+        return level;
+    }
+
+    public String[] getComponents() {
+        return components;
+    }
+
+    public boolean isSpell_resistance() {
+        return spell_resistance;
+    }
 }
