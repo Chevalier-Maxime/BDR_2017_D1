@@ -52,8 +52,6 @@ public class Main {
             Parser p = new Parser(new URL(URL));
             RawEntry r = p.next(2);
             System.out.println("Fini");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
