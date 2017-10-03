@@ -71,11 +71,8 @@ public class Parser {
     private int[] getLevels(Document doc){
         Element spellName = doc.select("P.SPDet").first();
         String string = spellName.text().replace('/',',');
-        System.out.println(string);
         String stringFormatted = string.substring(string.lastIndexOf(';') + 7);
-        System.out.println(stringFormatted);
         stringFormatted = stringFormatted.replaceAll("[^0-9,]","");
-        System.out.println(stringFormatted);
 
         String finalString = "";
 

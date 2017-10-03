@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -35,22 +38,21 @@ public class Main {
     	// 1. Connect to MongoDB instance running on localhost
     	MongoClient mongoClient = new MongoClient();
 
-    	// Access database named 'test'
+    	/*// Access database named 'test'
     	MongoDatabase database = mongoClient.getDatabase("test");
 
     	// Access collection named 'restaurants'
-    	MongoCollection<Document> collection = database.getCollection("sorts");
-    	
-    	
-    	
-    	
-    	
-    	
-    	
+    	MongoCollection<Document> collection = database.getCollection("sorts");*/
+
+    	DB db =  mongoClient.getDB("test");
+        DBCollection collection =db.getCollection("sorts");
+
     	
     	try {
             Parser p = new Parser(new URL(URL));
-            RawEntry r = p.next(2);
+            RawEntry r = p.next(1);
+            collection.insert(new BasicDBObject(r.getDocumentMap()));
+
             System.out.println("Fini");
         } catch (IOException e) {
             e.printStackTrace();
