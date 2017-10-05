@@ -77,11 +77,13 @@ public class Parser {
         String finalString = "";
 
         char precedent = stringFormatted.charAt(0);
+        if(precedent != ',') finalString+=stringFormatted.charAt(0);
         for(int i = 1 ; i < stringFormatted.length(); i++){
             char current = stringFormatted.charAt(i);
             if ((precedent == ',') && (i == 1)){
                 finalString+=stringFormatted.charAt(i) + "," + stringFormatted.charAt(i);
-            } else if ((precedent == ',') && current ==','){
+            }
+            else if ((precedent == ',') && current ==','){
                 finalString+=stringFormatted.charAt(i+1) + ",";
             } else {
                 finalString+=stringFormatted.charAt(i);
@@ -89,6 +91,9 @@ public class Parser {
 
             precedent = current;
         }
+        if(precedent == ',') finalString+=stringFormatted.charAt(stringFormatted.length()-2);
+        //System.out.println(finalString);
+
         return Arrays.stream(finalString.split(",")).mapToInt(Integer::parseInt).toArray();
     }
 
@@ -110,10 +115,13 @@ public class Parser {
      * @return spell resistance
      */
     private boolean getSpellResistance(Document doc){
-        Element spellResistance = doc.select("P.SPDet").get(6);
-        String string = spellResistance.text().substring(spellResistance.text().lastIndexOf(';'));
-        if (string.contains(" no")) return false;
+        try {
+            Element spellResistance = doc.select("P.SPDet").get(6);
+            String string = spellResistance.text().substring(spellResistance.text().lastIndexOf(';'));
+            return !string.contains(" no");
+        }catch (Exception e){
+            return false;
+        }
 
-        return true;
     }
 }

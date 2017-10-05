@@ -1,27 +1,13 @@
 package partieUn;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.mongodb.client.model.Indexes;
-
-import static com.mongodb.client.model.Accumulators.sum;
-import static com.mongodb.client.model.Aggregates.group;
-import static com.mongodb.client.model.Aggregates.match;
-import static com.mongodb.client.model.Filters.eq;
-import static java.util.Arrays.asList;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 
@@ -32,30 +18,36 @@ public class Main {
     private final static String URL = "http://www.dxcontent.com/SDB_SpellBlock.asp?SDBID=";
 
     public static void main(String[] args) {
-        
-    	
-    	
-    	// 1. Connect to MongoDB instance running on localhost
-    	MongoClient mongoClient = new MongoClient();
 
-    	// Access database named 'test'
-    	MongoDatabase database = mongoClient.getDatabase("test");
 
-    	// Access collection named 'restaurants'
-    	MongoCollection<Document> collection = database.getCollection("sorts");
+        // 1. Connect to MongoDB instance running on localhost
+        MongoClient mongoClient = new MongoClient();
 
-    	
-    	try {
-            Parser p = new Parser(new URL(URL));
-            RawEntry r = p.next(2);
-            collection.insertOne(r.getDoc());
+        // Access database named 'test'
+        MongoDatabase database = mongoClient.getDatabase("test");
 
-            System.out.println("Fini");
-        } catch (IOException e) {
+        // Access collection named 'restaurants'
+        MongoCollection<Document> collection = database.getCollection("sorts");
+
+        Parser p = null;
+        try {
+            p = new Parser(new URL(URL));
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
-        mongoClient.close();
+        for (int i = START_INDEX; i <= END_INDEX; i++) {
+            System.out.println("index courant : " + i);
+            try {
+                RawEntry r = p.next(i);
+                collection.insertOne(r.getDoc());
+            } catch (Exception e) {//page inexistante}
+            }
+
+            System.out.println("Fini");
+
+            mongoClient.close();
+        }
     }
 
 
