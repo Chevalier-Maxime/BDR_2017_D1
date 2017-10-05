@@ -38,20 +38,17 @@ public class Main {
     	// 1. Connect to MongoDB instance running on localhost
     	MongoClient mongoClient = new MongoClient();
 
-    	/*// Access database named 'test'
+    	// Access database named 'test'
     	MongoDatabase database = mongoClient.getDatabase("test");
 
     	// Access collection named 'restaurants'
-    	MongoCollection<Document> collection = database.getCollection("sorts");*/
-
-    	DB db =  mongoClient.getDB("test");
-        DBCollection collection =db.getCollection("sorts");
+    	MongoCollection<Document> collection = database.getCollection("sorts");
 
     	
     	try {
             Parser p = new Parser(new URL(URL));
-            RawEntry r = p.next(1);
-            collection.insert(new BasicDBObject(r.getDocumentMap()));
+            RawEntry r = p.next(2);
+            collection.insertOne(r.getDoc());
 
             System.out.println("Fini");
         } catch (IOException e) {

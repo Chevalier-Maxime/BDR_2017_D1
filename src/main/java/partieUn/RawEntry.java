@@ -1,29 +1,30 @@
 package partieUn;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.bson.Document;
+
+import java.util.Arrays;
 
 public class RawEntry {
-    private Map<String, Object> documentMap = new HashMap<>();
-    private Map<String,Integer> availableFor = new HashMap<>();
+    private Document doc = new Document();
 
 
 
     public RawEntry(String spellName, String[] classes, int[] level, String[] components, boolean spell_resistance) {
 
-        documentMap.put("SpellName",spellName);
-        documentMap.put("SpellResistance", spell_resistance);
-        documentMap.put("Components", components);
+        doc.put("SpellName", spellName);
+        doc.put("SpellResistance",spell_resistance);
+        doc.put("Components", Arrays.asList(components));
+        Document availableFor = new Document();
 
         for (int i = 0 ; i < classes.length ; i++) {
             availableFor.put(classes[i], level[i]);
         }
-
-        documentMap.put("AvailableFor", availableFor);
+        doc.put("AvailableFor", availableFor);
 
     }
 
-    public Map<String, Object> getDocumentMap() {
-        return documentMap;
+    public Document getDoc() {
+        return doc;
     }
+
 }
