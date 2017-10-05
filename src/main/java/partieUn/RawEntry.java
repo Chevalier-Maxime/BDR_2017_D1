@@ -7,8 +7,6 @@ import java.util.Arrays;
 public class RawEntry {
     private Document doc = new Document();
 
-
-
     public RawEntry(String spellName, String[] classes, int[] level, String[] components, boolean spell_resistance) {
 
         doc.put("SpellName", spellName);
