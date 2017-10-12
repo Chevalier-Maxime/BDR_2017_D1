@@ -6,17 +6,17 @@ import java.util.Arrays;
 
 public class Item {
     private String id;
-    private int pg;
+    private double pg;
     private String adj[];
 
 
-    public Item(String id, int pg, String[] adj) {
+    public Item(String id, double pg, String[] adj) {
         this.id = id;
         this.pg = pg;
         this.adj = adj;
     }
 
-    public void itemChange(String id, int pg, String[] adj) {
+    public void itemChange(String id, double pg, String[] adj) {
         this.id = id;
         this.pg = pg;
         this.adj = adj;

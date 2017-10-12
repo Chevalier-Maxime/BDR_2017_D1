@@ -10,8 +10,8 @@ import com.mongodb.client.model.MapReduceAction;
 import org.bson.Document;
 
 public class Main {
-    public final static double DUMPING_FACTOR = 0.5;
-    public final static int NB_ITERATION = 10;
+    public final static double DUMPING_FACTOR = 0.85;
+    public final static int NB_ITERATION = 20;
     public static void main(String[] args) {
 
         // 1. Connect to MongoDB instance running on localhost
@@ -23,28 +23,27 @@ public class Main {
         MongoCollection<Document> collection = database.getCollection("initial");
         collection.drop();
         database.getCollection("res").drop();
-        Item item = new Item("Ed",1, new String[]{"Frank","Julien"});
+        Item item = new Item("A",1, new String[]{"B","C"});
         collection.insertOne(item.getDoc());
-        item.itemChange("Frank",1, new String[]{"Ed"});
+        item.itemChange("B",1, new String[]{"C"});
         collection.insertOne(item.getDoc());
-        item.itemChange("Julien",1, new String[]{"Ed","Florentin","Valere"});
+        item.itemChange("C",1, new String[]{"A"});
         collection.insertOne(item.getDoc());
-        item.itemChange("Valere",1, new String[]{"Julien","Florentin","Bruno"});
-        collection.insertOne(item.getDoc());
-        item.itemChange("Bruno",1, new String[]{"Valere"});
-        collection.insertOne(item.getDoc());
-        item.itemChange("Florentin",1, new String[]{"Julien","Valere"});
+        item.itemChange("D",1, new String[]{"C"});
         collection.insertOne(item.getDoc());
 
         String map="function() {"+
                 //"var objet = {type:\"full\", rank:this.rank, adjList:this.adjList};"+
+                //"print(tojson(this));"+
                 "emit(this._id, this.value);"+
                 "var adjlist = this.value.adjList;"+
                 "var currentRank = this.value.rank;"+
+                "var beSure =  {type:\"null\", rank:0};"+
+                "emit(this._id,beSure);" + //afin d'etre sur que le reduce sera appelé
                 "for(var i = 0; i < adjlist.length; i++) {"+
                     "var adj = adjlist[i];"+
                     "var yourRank = currentRank/adjlist.length;"+
-                    "objet =  {type:\"compact\", rank:yourRank};"+
+                    "var objet =  {type:\"compact\", rank:yourRank};"+
                     "emit(adj, objet);"+
                 "}"+
          "}";
@@ -60,6 +59,7 @@ public class Main {
                         "full = val;" +
                     "}" +
                 "}"+
+               // "print(\"Qui suis-je ?\",tojson(full));"+
                 //"//Then improve on it" +
                 "var computeRank = 0;"+
                 "for (var i = 0; i < values.length; i++)" +
@@ -70,18 +70,19 @@ public class Main {
                     "}" +
                 "}"+
                 "computeRank = (1-"+ DUMPING_FACTOR + ") + "+ DUMPING_FACTOR +" * computeRank;" +
+                "print(computeRank);"+
                 "full.rank = computeRank;" +
+                //"print(\"Qui serais-je ?\",tojson(full));"+
                 "return full;" +
         "}";
         collection.mapReduce(map, reduce).collectionName("res").first(); //le first c'est pour obliger MongoDB à faire le mapReduce (lazy)
         MongoCollection<Document> res = database.getCollection("res");
-        MapReduceIterable<Document> mapReduce = null;
         for(int i = 1; i < NB_ITERATION ; i++ ){
             System.out.println(i);
-            mapReduce = res.mapReduce(map, reduce).action(MapReduceAction.REPLACE);
+            res.mapReduce(map, reduce).action(MapReduceAction.REPLACE).collectionName("res").first();
         }
         System.out.println("FIN : ");
-        for(Document d:mapReduce){
+        for(Document d:res.find()){
             System.out.println(d);
         }
         mongoClient.close();
