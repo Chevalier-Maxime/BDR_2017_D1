@@ -1,0 +1,25 @@
+MongoClient mongoClient = new MongoClient();
+
+MongoDatabase database = mongoClient.getDatabase("test");
+MongoCollection<Document> collection = database.getCollection("sorts");
+
+String map = "function() {"++
+	"var components = this.components;"+
+	"var AvailableFor = this.AvailableFor;"+
+	"for( var i of components){"+
+		"if ( var i == "V" &&  components.lenght()==1){"+
+			"for( var j in AvailableFor){"+
+				"if(j.wizard <= 4){"+
+					"emit(this['_id'],{SpellName :this['SpellName']});"+
+				"}"+
+			"}"+
+		"}"+
+	"}"+
+"}"+
+string reduce = "function(key, values){"+
+"}"+
+
+collection.mapReduce(map, reduce).collectionName("res_sorts").first();
+
+//db.sorts.mapReduce(map,reduce,{out : 'sorts_wizard_lvl4_V'});
+//db.sorts_wizard.find();
