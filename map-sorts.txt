@@ -3,7 +3,7 @@ MongoClient mongoClient = new MongoClient();
 MongoDatabase database = mongoClient.getDatabase("test");
 MongoCollection<Document> collection = database.getCollection("sorts");
 
-String map = "function() {"++
+String map = "function() {"+
 	"var components = this.components;"+
 	"var AvailableFor = this.AvailableFor;"+
 	"for( var i of components){"+
