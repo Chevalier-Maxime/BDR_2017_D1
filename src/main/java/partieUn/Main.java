@@ -19,8 +19,10 @@ public class Main {
     private final static String URL = "http://www.dxcontent.com/SDB_SpellBlock.asp?SDBID=";
 
     public static void main(String[] args) {
+        partieUneMongoDb();
+    }
 
-
+    private static void partieUneMongoDb() {
         // 1. Connect to MongoDB instance running on localhost
         MongoClient mongoClient = new MongoClient();
 
@@ -53,17 +55,17 @@ public class Main {
             String map = "function() {" +
                     "var components = this.Components;" +
                     "var AvailableFor = this.AvailableFor;" +
-                    "for( var i of components){" +
-                    "if ( i == \"V\" &&  components.length==1){" +
-                    "print(tojson(this));" +
-                    "for( var j in AvailableFor){" +
-                    "if(j == \"wizard\" && AvailableFor[j] <= 4){" +
-                    "print(this);" +
-                    "emit(this['_id'],{SpellName :this['SpellName']});" +
-                    "}" +
-                    "}" +
-                    "}" +
-                    "}" +
+                        "for( var i of components){" +
+                            "if ( i == \"V\" &&  components.length==1){" +
+                                "print(tojson(this));" +
+                                "for( var j in AvailableFor){" +
+                                    "if(j == \"wizard\" && AvailableFor[j] <= 4){" +
+                                        "print(this);" +
+                                        "emit(this['_id'],{SpellName :this['SpellName']});" +
+                                    "}" +
+                                "}" +
+                            "}" +
+                        "}" +
                     "}";
             String reduce = "function(key, values){" +
                     "}";
