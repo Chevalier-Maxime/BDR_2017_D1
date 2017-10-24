@@ -49,7 +49,7 @@ public class Main {
          "}";
 
         String reduce="function(key, values) {"+
-                //"print(\"1er Reduce : \", tojson(key), tojson(values));" +
+                "print(\"1er Reduce : \", tojson(key), tojson(values));" +
                 "var full = {};"+
                // "//First, find the original one" +
                 "for (var i = 0; i < values.length; i++)" +

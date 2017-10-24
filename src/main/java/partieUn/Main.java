@@ -3,6 +3,7 @@ package partieUn;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.MapReduceAction;
 import org.bson.Document;
 
 import java.io.IOException;
@@ -44,6 +45,37 @@ public class Main {
 
             System.out.println("Fini");
 
+
+            //MongoCollection<Document> collection = database.getCollection("sorts");
+
+            String map = "function() {" +
+                    "var components = this.Components;" +
+                    "var AvailableFor = this.AvailableFor;" +
+                        "for( var i of components){" +
+                            "if ( i == \"V\" &&  components.length==1){" +
+                                "print(tojson(this));" +
+                                "for( var j in AvailableFor){" +
+                                    "if(j == \"wizard\" && AvailableFor[j] <= 4){" +
+                                        "print(this);" +
+                                        "emit(this['_id'],{SpellName :this['SpellName']});" +
+                                    "}" +
+                                "}" +
+                            "}" +
+                        "}" +
+                    "}";
+            String reduce = "function(key, values){" +
+                    "}";
+
+            collection.mapReduce(map, reduce).action(MapReduceAction.REPLACE).collectionName("res_sorts").first();
+
+            MongoCollection<Document> res = database.getCollection("res_sorts");
+            for (Document d : res.find()) {
+                System.out.println(((Document) d.get("value")).get("SpellName"));
+            }
+
+            //db.sorts.mapReduce(map,reduce,{out : 'sorts_wizard_lvl4_V'});
+            //db.sorts_wizard.find();
+
             mongoClient.close();
     }
         }
@@ -81,9 +113,9 @@ public class Main {
                 	level = level + " "+  r.getLevel()[j];
                 }
                 
-                EntreSQLite entrée = new EntreSQLite(spellName, classes, level, components, spell_resistance);
+                EntreSQLite entrï¿½e = new EntreSQLite(spellName, classes, level, components, spell_resistance);
                 //System.out.println(classes);
-             sqliteDAO.insertRawEntry(entrée);
+             sqliteDAO.insertRawEntry(entrï¿½e);
             } catch (Exception e) {//page inexistante}
             }    	
            
