@@ -10,17 +10,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-
 public class Main {
 
     private final static int START_INDEX = 1;
     private final static int END_INDEX = 1975;
     private final static String URL = "http://www.dxcontent.com/SDB_SpellBlock.asp?SDBID=";
 
-    public static void main(String[] args) {
-
-
-        // 1. Connect to MongoDB instance running on localhost
+    static void getWithMongoDB()
+    {
+    	   // 1. Connect to MongoDB instance running on localhost
         MongoClient mongoClient = new MongoClient();
 
         // Access database named 'test'
@@ -47,8 +45,65 @@ public class Main {
             System.out.println("Fini");
 
             mongoClient.close();
+    }
+        }
+
+    static void getWithBddSQLite()
+    {
+    	SQLiteDAO sqliteDAO = new SQLiteDAO();
+        Parser p = null;
+       // sqliteDAO.createBDD();
+        try {
+            p = new Parser(new URL(URL));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = START_INDEX; i <= END_INDEX; i++) {
+            System.out.println("index courant : " + i);
+            try {
+                RawEntry r = p.next(i);
+                String spellName = r.getSpellName().toString();
+                boolean spell_resistance = r.isSpell_resistance();
+                String classes ="";
+                for (int j= 0; j<r.getClasses().length; j++)
+                {
+                	classes = classes + " "+  r.getClasses()[j];
+                }
+                String components ="";
+                for (int j= 0; j<r.getComponents().length; j++)
+                {
+                	components = components + " "+  r.getComponents()[j];
+                }
+                String level ="";
+                for (int j= 0; j<r.getLevel().length; j++)
+                {
+                	level = level + " "+  r.getLevel()[j];
+                }
+                
+                EntreSQLite entrée = new EntreSQLite(spellName, classes, level, components, spell_resistance);
+                //System.out.println(classes);
+             sqliteDAO.insertRawEntry(entrée);
+            } catch (Exception e) {//page inexistante}
+            }    	
+           
+    }
+        
+        System.out.println("Fini !!! ");
+    }
+    
+    public static void main(String[] args) {
+
+    	getWithBddSQLite();
+    	//SQLiteDAO sqliteDAO = new SQLiteDAO();
+    	//sqliteDAO.deleteTable("Classe");
+    	//sqliteDAO.deleteTable("Utilise");
+    	//sqliteDAO.deleteTable("Composant");
+    	//sqliteDAO.deleteTable("Niveau");
+    	//sqliteDAO.deleteTable("Sort");
+    	//sqliteDAO.createBDD();
         }
     }
 
 
-}
+
