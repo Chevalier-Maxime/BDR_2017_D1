@@ -44,32 +44,34 @@ public class SQLiteDAO {
 	         String sql ;
 	         
 	         sql = "CREATE TABLE Classe " +
-	                        "(nomClasse VARCHAR PRIMARY KEY     NOT NULL)"; 
+	                        "(nomClasse STRING PRIMARY KEY     NOT NULL)"; 
 	         stmt.executeUpdate(sql);
 	         
 	         //Creation de la table Sort.
 	         
 	          sql = "CREATE TABLE Sort " +
-	                        "(nomSort VARCHAR PRIMARY KEY     NOT NULL," + 
+	                        "(nomSort STRING PRIMARY KEY     NOT NULL," + 
 	        		  "spell_resistance BOOLEAN) "; 
 	         stmt.executeUpdate(sql);
 	         
 	        //Creation de la table Composant.
 	         
 	         sql = "CREATE TABLE Composant " +
-                "(components VARCHAR PRIMARY KEY     NOT NULL)"; 
+                "(components STRING PRIMARY KEY     NOT NULL)"; 
  stmt.executeUpdate(sql);
  
 // Creation de la table Niveau.
 
  sql = "CREATE TABLE Niveau" 
 		+
-		  "(nomSort VARCHAR REFERENCES Sort(nomSort),"
-		 + "nomClasse VARCHAR REFERENCES Classe(nomClasse),"
-		  + "level VARCHAR,"
+		  "(nomSort STRING REFERENCES Sort(nomSort),"
+		 + "nomClasse STRING REFERENCES Classe(nomClasse),"
+		  + "level STRING,"
 		 + "PRIMARY KEY (nomSort,nomClasse))"
 		 ;
 stmt.executeUpdate(sql);
+
+
 
 
         
@@ -79,8 +81,8 @@ stmt.executeUpdate(sql);
 sql = "CREATE TABLE Utilise" 
 		 
 		
-		 + "(nomSort VARCHAR REFERENCES Sort(nomSort),"
-		 + "components VARCHAR REFERENCES Composant(components))"
+		 + "(nomSort STRING REFERENCES Sort(nomSort),"
+		 + "components STRING REFERENCES Composant(components))"
 		 ;
 stmt.executeUpdate(sql);
 
@@ -135,6 +137,7 @@ stmt.executeUpdate(sql);
 		   
 		   */
 		   // Insertion dans la table Classe.
+		   
 
                //TODO J'ai modifié ce string
 		   String sql = "INSERT INTO Classe (nomClasse) " +
@@ -146,23 +149,23 @@ stmt.executeUpdate(sql);
  // Insertion dans la table Sort.
     sql = "INSERT INTO Sort (nomSort, spell_resistance) " +
             "VALUES ("+ entree.getSpellName() + "," + entree.isSpell_resistance()+ ");";
-stmt.executeUpdate(sql);
+ i = stmt.executeUpdate(sql);
 
 // Insertion dans la table Composant.
 sql = "INSERT INTO Composant (components) " +
-        "VALUES ("+ entree.getComponents() + ");";
-stmt.executeUpdate(sql);
+        "VALUES "+ entree.getComponents() + ";";
+i = stmt.executeUpdate(sql);
 
 // Insertion dans la table Niveau.
 
 sql = "INSERT INTO Niveau (nomSort,nomClasse, level  ) " +
         "VALUES ("+ entree.getSpellName() +", "+ entree.getClasses() +"," + entree.getLevel() +  ");";
-stmt.executeUpdate(sql);
+i = stmt.executeUpdate(sql);
 
 // Insertion dans la table Utilise.
 sql = "INSERT INTO Utilise (nomSort,components ) " +
         "VALUES ("+ entree.getSpellName() +", "+ entree.getComponents() +  ");";
-stmt.executeUpdate(sql); 
+i = stmt.executeUpdate(sql); 
 
 stmt.close(); // Fermeture du statement.
 

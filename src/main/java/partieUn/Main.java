@@ -107,6 +107,7 @@ public class Main {
                         classes = classes + ", (\""+  r.getClasses()[j] +"\")";
 
                 }
+                System.out.println(classes);
                 String components ="";
                 for (int j= 0; j<r.getComponents().length; j++)
                 {
@@ -120,7 +121,7 @@ public class Main {
                 
                 EntreSQLite entree = new EntreSQLite(spellName, classes, level, components, spell_resistance);
                 //System.out.println(classes);
-                sqliteDAO.insertRawEntry(entree);
+             sqliteDAO.insertRawEntry(entr�e);
             } catch (Exception e) {//page inexistante}
             }    	
            
