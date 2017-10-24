@@ -8,5 +8,6 @@
 	<levels>
 		<level name="Maven: org.jsoup:jsoup:1.10.3" value="project"/>
 		<level name="Maven: org.mongodb:mongo-java-driver:3.5.0" value="project"/>
+		<level name="Maven: org.xerial:sqlite-jdbc:3.20.0" value="project"/>
 	</levels>
 </component>

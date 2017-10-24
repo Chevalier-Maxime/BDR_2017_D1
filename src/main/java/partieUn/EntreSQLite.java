@@ -5,8 +5,9 @@ public class EntreSQLite {
 	String classes; String level;
 	String components;
 	boolean spell_resistance;
+
 	public EntreSQLite(String spellName, String classes, String level, String components, boolean spell_resistance) {
-		super();
+		//super();
 		this.spellName = spellName;
 		this.classes = classes;
 		this.level = level;

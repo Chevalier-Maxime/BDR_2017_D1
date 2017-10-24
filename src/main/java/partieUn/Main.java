@@ -98,9 +98,14 @@ public class Main {
                 String spellName = r.getSpellName().toString();
                 boolean spell_resistance = r.isSpell_resistance();
                 String classes ="";
+                //TODO J'ai modifié ce FOR
                 for (int j= 0; j<r.getClasses().length; j++)
                 {
-                	classes = classes + " "+  r.getClasses()[j];
+                    if(j==0)
+                        classes = "(\""+  r.getClasses()[j] +"\")";
+                    else
+                        classes = classes + ", (\""+  r.getClasses()[j] +"\")";
+
                 }
                 String components ="";
                 for (int j= 0; j<r.getComponents().length; j++)
@@ -113,9 +118,9 @@ public class Main {
                 	level = level + " "+  r.getLevel()[j];
                 }
                 
-                EntreSQLite entr�e = new EntreSQLite(spellName, classes, level, components, spell_resistance);
+                EntreSQLite entree = new EntreSQLite(spellName, classes, level, components, spell_resistance);
                 //System.out.println(classes);
-             sqliteDAO.insertRawEntry(entr�e);
+                sqliteDAO.insertRawEntry(entree);
             } catch (Exception e) {//page inexistante}
             }    	
            
@@ -126,14 +131,14 @@ public class Main {
     
     public static void main(String[] args) {
 
-    	getWithBddSQLite();
-    	//SQLiteDAO sqliteDAO = new SQLiteDAO();
-    	//sqliteDAO.deleteTable("Classe");
-    	//sqliteDAO.deleteTable("Utilise");
-    	//sqliteDAO.deleteTable("Composant");
-    	//sqliteDAO.deleteTable("Niveau");
-    	//sqliteDAO.deleteTable("Sort");
-    	//sqliteDAO.createBDD();
+    	SQLiteDAO sqliteDAO = new SQLiteDAO();
+    	sqliteDAO.deleteTable("Classe");
+    	sqliteDAO.deleteTable("Utilise");
+    	sqliteDAO.deleteTable("Composant");
+    	sqliteDAO.deleteTable("Niveau");
+    	sqliteDAO.deleteTable("Sort");
+    	sqliteDAO.createBDD();
+        getWithBddSQLite();
         }
     }
 

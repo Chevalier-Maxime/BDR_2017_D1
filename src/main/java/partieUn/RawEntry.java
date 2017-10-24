@@ -8,6 +8,19 @@ public class RawEntry {
 
 	private String spellName;
 	private String[] classes;
+	private int[] level;
+	private String[] components;
+	private boolean spell_resistance;
+
+	public RawEntry(String spellName, String[] classes, int[] level, String[] components, boolean spell_resistance) {
+
+		this.spellName = spellName;
+		this.classes = classes;
+		this.level = level;
+		this.components = components;
+		this.spell_resistance = spell_resistance;
+
+	}
 
 	public String getSpellName() {
 		return spellName;
@@ -49,25 +62,11 @@ public class RawEntry {
 		this.spell_resistance = spell_resistance;
 	}
 
-	private int[] level;
-	private String[] components;
 	@Override
 	public String toString() {
 		return "RawEntry [spellName=" + spellName + ", classes=" + Arrays.toString(classes) + ", level="
 				+ Arrays.toString(level) + ", components=" + Arrays.toString(components) + ", spell_resistance="
 				+ spell_resistance + "]";
-	}
-
-	private boolean spell_resistance;
-
-	public RawEntry(String spellName, String[] classes, int[] level, String[] components, boolean spell_resistance) {
-
-		this.spellName = spellName;
-		this.classes = classes;
-		this.level = level;
-		this.components = components;
-		this.spell_resistance = spell_resistance;
-
 	}
 
 	public Document getDoc() {
@@ -83,5 +82,4 @@ public class RawEntry {
 		doc.put("AvailableFor", availableFor);
 		return doc;
 	}
-
 }

@@ -33,7 +33,7 @@ public class SQLiteDAO {
 		         System.exit(0);
 		      }
 		   
-		   System.out.println(" La table a été supprimé avec succès !!!");
+		   System.out.println(" La table a ete supprime avec succès !!!");
 		   
 	   }
 	   
@@ -47,20 +47,20 @@ public class SQLiteDAO {
 	                        "(nomClasse VARCHAR PRIMARY KEY     NOT NULL)"; 
 	         stmt.executeUpdate(sql);
 	         
-	         //Création de la table Sort.
+	         //Creation de la table Sort.
 	         
 	          sql = "CREATE TABLE Sort " +
 	                        "(nomSort VARCHAR PRIMARY KEY     NOT NULL," + 
 	        		  "spell_resistance BOOLEAN) "; 
 	         stmt.executeUpdate(sql);
 	         
-	        //Création de la table Composant.
+	        //Creation de la table Composant.
 	         
 	         sql = "CREATE TABLE Composant " +
                 "(components VARCHAR PRIMARY KEY     NOT NULL)"; 
  stmt.executeUpdate(sql);
  
-// Création de la table Niveau.
+// Creation de la table Niveau.
 
  sql = "CREATE TABLE Niveau" 
 		+
@@ -74,7 +74,7 @@ stmt.executeUpdate(sql);
 
         
  
-	         // Création de la table Utilise.
+	         // Creation de la table Utilise.
 	         
 sql = "CREATE TABLE Utilise" 
 		 
@@ -95,11 +95,11 @@ stmt.executeUpdate(sql);
 	  	         System.exit(0);
 	  	      }
 		   
-		   System.out.println("Tables créés avec succès !!! ");
+		   System.out.println("Tables cres avec succès !!! ");
 		   
 		   }
 	
-	   public void insertRawEntry( EntreSQLite entrée)
+	   public void insertRawEntry( EntreSQLite entree)
 	   {
 		   
 		   
@@ -135,31 +135,33 @@ stmt.executeUpdate(sql);
 		   
 		   */
 		   // Insertion dans la table Classe.
-		
+
+               //TODO J'ai modifié ce string
 		   String sql = "INSERT INTO Classe (nomClasse) " +
-                   "VALUES ("+ entrée.getClasses() + ");"; 
-    stmt.executeUpdate(sql); 
+                   "VALUES "+ entree.getClasses() + ";";
+		   //TODO et le int c'est juste pour le debug
+    int i = stmt.executeUpdate(sql);
     
     
  // Insertion dans la table Sort.
     sql = "INSERT INTO Sort (nomSort, spell_resistance) " +
-            "VALUES ("+ entrée.getSpellName() + "," + entrée.isSpell_resistance()+ ");"; 
+            "VALUES ("+ entree.getSpellName() + "," + entree.isSpell_resistance()+ ");";
 stmt.executeUpdate(sql);
 
 // Insertion dans la table Composant.
 sql = "INSERT INTO Composant (components) " +
-        "VALUES ("+ entrée.getComponents() + ");"; 
+        "VALUES ("+ entree.getComponents() + ");";
 stmt.executeUpdate(sql);
 
 // Insertion dans la table Niveau.
 
 sql = "INSERT INTO Niveau (nomSort,nomClasse, level  ) " +
-        "VALUES ("+ entrée.getSpellName() +", "+ entrée.getClasses() +"," + entrée.getLevel() +  ");";  
+        "VALUES ("+ entree.getSpellName() +", "+ entree.getClasses() +"," + entree.getLevel() +  ");";
 stmt.executeUpdate(sql);
 
 // Insertion dans la table Utilise.
 sql = "INSERT INTO Utilise (nomSort,components ) " +
-        "VALUES ("+ entrée.getSpellName() +", "+ entrée.getComponents() +  ");";  
+        "VALUES ("+ entree.getSpellName() +", "+ entree.getComponents() +  ");";
 stmt.executeUpdate(sql); 
 
 stmt.close(); // Fermeture du statement.
@@ -171,7 +173,7 @@ c.close(); // Fermeture de la connexion
 	  	         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 	  	         System.exit(0);
 	  	      }
-		   System.out.println(" Lignes insérées avec succès !!! ");
+		   System.out.println(" Lignes inserees avec succès !!! ");
 	   }
 	   
 	 
