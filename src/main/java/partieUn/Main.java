@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 public class Main {
@@ -121,15 +122,21 @@ public class Main {
     }
     
     public static void main(String[] args) {
-
+    	
+    	ArrayList<String> listeNomSort = new ArrayList<String>();
     	SQLiteDAO sqliteDAO = new SQLiteDAO();
     	/*sqliteDAO.deleteTable("Classe");
     	sqliteDAO.deleteTable("Utilise");
     	sqliteDAO.deleteTable("Composant");
     	sqliteDAO.deleteTable("Niveau");
     	sqliteDAO.deleteTable("Sort");
-    	sqliteDAO.createBDD();*/
-        getWithBddSQLite();
+    	sqliteDAO.createBDD();
+        getWithBddSQLite();*/
+    	listeNomSort = sqliteDAO.selectSort();
+    	for(int i=0; i<listeNomSort.size(); i++)
+    	{
+    		System.out.println(listeNomSort.get(i) );
+    	}
         }
     }
 
