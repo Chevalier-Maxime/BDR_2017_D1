@@ -148,7 +148,7 @@ stmt.executeUpdate(sql);
     
  // Insertion dans la table Sort.
     sql = "INSERT INTO Sort (nomSort, spell_resistance) " +
-            "VALUES ("+ entree.getSpellName() + "," + entree.isSpell_resistance()+ ");";
+            "VALUES (\""+ entree.getSpellName() + "\",'" + entree.isSpell_resistance()+ "');";
  i = stmt.executeUpdate(sql);
 
 // Insertion dans la table Composant.
@@ -157,7 +157,7 @@ sql = "INSERT INTO Composant (components) " +
 i = stmt.executeUpdate(sql);
 
 // Insertion dans la table Niveau.
-
+//TODO ne fonctionne pas
 sql = "INSERT INTO Niveau (nomSort,nomClasse, level  ) " +
         "VALUES ("+ entree.getSpellName() +", "+ entree.getClasses() +"," + entree.getLevel() +  ");";
 i = stmt.executeUpdate(sql);

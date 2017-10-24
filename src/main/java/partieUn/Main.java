@@ -111,7 +111,10 @@ public class Main {
                 String components ="";
                 for (int j= 0; j<r.getComponents().length; j++)
                 {
-                	components = components + " "+  r.getComponents()[j];
+                    if(j==0)
+                	    components = "('"+r.getComponents()[j]+"')";
+                    else
+                        components = components + ",('"+r.getComponents()[j]+"')";
                 }
                 String level ="";
                 for (int j= 0; j<r.getLevel().length; j++)
@@ -121,7 +124,7 @@ public class Main {
                 
                 EntreSQLite entree = new EntreSQLite(spellName, classes, level, components, spell_resistance);
                 //System.out.println(classes);
-             sqliteDAO.insertRawEntry(entr�e);
+             sqliteDAO.insertRawEntry(entree);
             } catch (Exception e) {//page inexistante}
             }    	
            
