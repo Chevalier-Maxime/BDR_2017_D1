@@ -27,7 +27,7 @@ public class Main {
         MongoClient mongoClient = new MongoClient();
 
         // Access database named 'test'
-        MongoDatabase database = mongoClient.getDatabase("test");
+        MongoDatabase database = mongoClient.getDatabase("partie1");
 
         // Access collection named 'restaurants'
         MongoCollection<Document> collection = database.getCollection("sorts");
@@ -46,6 +46,7 @@ public class Main {
                 collection.insertOne(r.getDoc());
             } catch (Exception e) {//page inexistante}
             }
+        }
 
             System.out.println("Fini");
 
@@ -82,11 +83,18 @@ public class Main {
 
             mongoClient.close();
     }
-        }
 
     static void getWithBddSQLite()
     {
-    	SQLiteDAO sqliteDAO = new SQLiteDAO();
+        //initialisation de la base de donnée
+        SQLiteDAO sqliteDAO = new SQLiteDAO();
+    	sqliteDAO.deleteTable("Classe");
+    	sqliteDAO.deleteTable("Utilise");
+    	sqliteDAO.deleteTable("Composant");
+    	sqliteDAO.deleteTable("Niveau");
+    	sqliteDAO.deleteTable("Sort");
+    	sqliteDAO.createBDD();
+
         Parser p = null;
        // sqliteDAO.createBDD();
         try {
@@ -112,7 +120,13 @@ public class Main {
             }    	
            
     }
-        
+        ArrayList<String> listeNomSort = new ArrayList<String>();
+        listeNomSort = sqliteDAO.selectSort();
+        for(int i=0; i<listeNomSort.size(); i++)
+        {
+            System.out.println(listeNomSort.get(i) );
+        }
+
         System.out.println("Fini !!! ");
         try {
             sqliteDAO.c.close();
@@ -122,21 +136,8 @@ public class Main {
     }
     
     public static void main(String[] args) {
-    	
-    	ArrayList<String> listeNomSort = new ArrayList<String>();
-    	SQLiteDAO sqliteDAO = new SQLiteDAO();
-    	/*sqliteDAO.deleteTable("Classe");
-    	sqliteDAO.deleteTable("Utilise");
-    	sqliteDAO.deleteTable("Composant");
-    	sqliteDAO.deleteTable("Niveau");
-    	sqliteDAO.deleteTable("Sort");
-    	sqliteDAO.createBDD();
-        getWithBddSQLite();*/
-    	listeNomSort = sqliteDAO.selectSort();
-    	for(int i=0; i<listeNomSort.size(); i++)
-    	{
-    		System.out.println(listeNomSort.get(i) );
-    	}
+        //getWithBddSQLite();
+        getWithMongoDB();
         }
     }
 
