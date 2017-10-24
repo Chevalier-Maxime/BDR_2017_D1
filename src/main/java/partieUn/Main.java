@@ -5,10 +5,13 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.MapReduceAction;
 import org.bson.Document;
+import org.sqlite.SQLiteException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 
 public class Main {
@@ -95,53 +98,37 @@ public class Main {
             System.out.println("index courant : " + i);
             try {
                 RawEntry r = p.next(i);
-                String spellName = r.getSpellName().toString();
-                boolean spell_resistance = r.isSpell_resistance();
-                String classes ="";
-                //TODO J'ai modifié ce FOR
-                for (int j= 0; j<r.getClasses().length; j++)
-                {
-                    if(j==0)
-                        classes = "(\""+  r.getClasses()[j] +"\")";
-                    else
-                        classes = classes + ", (\""+  r.getClasses()[j] +"\")";
-
-                }
-                System.out.println(classes);
-                String components ="";
-                for (int j= 0; j<r.getComponents().length; j++)
-                {
-                    if(j==0)
-                	    components = "('"+r.getComponents()[j]+"')";
-                    else
-                        components = components + ",('"+r.getComponents()[j]+"')";
-                }
-                String level ="";
-                for (int j= 0; j<r.getLevel().length; j++)
-                {
-                	level = level + " "+  r.getLevel()[j];
-                }
-                
-                EntreSQLite entree = new EntreSQLite(spellName, classes, level, components, spell_resistance);
-                //System.out.println(classes);
-             sqliteDAO.insertRawEntry(entree);
-            } catch (Exception e) {//page inexistante}
+                r.insertSQL(sqliteDAO.c);
+            }catch(SQLException s){
+                //Il y a parfois des erreurs de duplicata, mais si c'est déjà dans la base, on a pas besoin de traiter
+                //Ici on skip les erreurs sur SQLITE_CONSTRAINT_PRIMARYKEY
+                if (s.getErrorCode() != 1555)
+                    s.printStackTrace();
+            }
+            catch (Exception e) {
+                //e.printStackTrace();
+                //page inexistante}
             }    	
            
     }
         
         System.out.println("Fini !!! ");
+        try {
+            sqliteDAO.c.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
     public static void main(String[] args) {
 
     	SQLiteDAO sqliteDAO = new SQLiteDAO();
-    	sqliteDAO.deleteTable("Classe");
+    	/*sqliteDAO.deleteTable("Classe");
     	sqliteDAO.deleteTable("Utilise");
     	sqliteDAO.deleteTable("Composant");
     	sqliteDAO.deleteTable("Niveau");
     	sqliteDAO.deleteTable("Sort");
-    	sqliteDAO.createBDD();
+    	sqliteDAO.createBDD();*/
         getWithBddSQLite();
         }
     }
