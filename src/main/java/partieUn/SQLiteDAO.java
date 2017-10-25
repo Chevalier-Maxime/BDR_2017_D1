@@ -44,10 +44,8 @@ public class SQLiteDAO {
     		   stmt = c.createStatement();
     	   ResultSet resultat;
     	   String sql;
-    	   sql = "SELECT Utilise.nomSort FROM Utilise "
-    	   		+ "NATURAL JOIN Niveau"
-    	   		+"WHERE components='V' AND nomSort NOT IN (SELECT nomSort FROM Utilise where components<>'V') AND nomClasse='wizard' AND level <=4;";
-
+    	   sql = "SELECT Utilise.nomSort FROM Utilise NATURAL JOIN Niveau"
+    	   		+" WHERE components='V' AND nomSort NOT IN (SELECT nomSort FROM Utilise where components<>'V') AND nomClasse='wizard' AND level <=4;";
     	   
     	   resultat = stmt.executeQuery(sql);
     	   while(resultat.next())
@@ -60,7 +58,7 @@ public class SQLiteDAO {
                System.exit(0);
             }
     	   
-    	   System.out.println(" Liste récupérée !!!");
+    	   System.out.println(" Liste rÃ©cupÃ©rÃ©e !!!");
     	   return listeSort;
     	   }
 
