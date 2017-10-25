@@ -44,13 +44,10 @@ public class SQLiteDAO {
     		   stmt = c.createStatement();
     	   ResultSet resultat;
     	   String sql;
-    	   sql = "SELECT nomSort"
-    	   		+  "from Classe"  
-    			+ "inner join Niveau  on classe.nomClasse = Niveau.nomClasse"
-    			   +"inner join Sort  on Niveau.nomSort = Sort.nomSort"
-    			   + "inner join Utilise  on Sort.nomSort = Utilise.nomSort"
-    			    + "inner join Composant  on Utilise.components = Composant.components"
-    			    + "where  Niveau.classe = wizard and Composant.components = v and Niveau.level < 4 ; " ;
+    	   sql = "SELECT Utilise.nomSort FROM Utilise "
+    	   		+ "NATURAL JOIN Niveau"
+    	   		+"WHERE components='V' AND nomSort NOT IN (SELECT nomSort FROM Utilise where components<>'V') AND nomClasse='wizard' AND level <=4;";
+
     	   
     	   resultat = stmt.executeQuery(sql);
     	   while(resultat.next())

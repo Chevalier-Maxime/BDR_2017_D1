@@ -137,7 +137,14 @@ public class Main {
     
     public static void main(String[] args) {
         //getWithBddSQLite();
-        getWithMongoDB();
+        //getWithMongoDB();
+    	SQLiteDAO sqliteDAO = new SQLiteDAO();
+    	ArrayList<String> listeDesSorts = new ArrayList<String>();
+    	listeDesSorts = sqliteDAO.selectSort();
+    	for (int i = 0; i<listeDesSorts.size(); i++)
+    	{
+    		System.out.println(listeDesSorts.get(i) + " ");
+    	}
         }
     }
 
